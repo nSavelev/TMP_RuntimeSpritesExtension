@@ -57,21 +57,30 @@ namespace TMP_SpriteExtension.Runtime
             var groups = sprites.GroupBy(e => e.texture).Where(e=>e.Key != null).Select(e=>(e.Key,e.ToList())).ToList();
             foreach (var group in groups)
             {
-                _rootAsset.fallbackSpriteAssets.Add(CreateSpriteAsset(group.Item2.Where(e=>e != null)));
+                _rootAsset.fallbackSpriteAssets.Add(CreateSpriteAsset(group.Item2.Where(e=>e != null).Select(e=>(e, e.name))));
             }
         }
 
-        private TMP_SpriteAsset CreateSpriteAsset(IEnumerable<Sprite> sprites)
+        public void RegisterSprites(IEnumerable<(Sprite sprite, string name)> sprites)
+        {
+            var groups = sprites.GroupBy(e => e.sprite.texture).Where(e=>e.Key != null).Select(e=>(e.Key,e.ToList())).ToList();
+            foreach (var group in groups)
+            {
+                _rootAsset.fallbackSpriteAssets.Add(CreateSpriteAsset(group.Item2.Where(e=>e.sprite != null).Select(e=>(e.sprite, e.name))));
+            }
+        }
+
+        private TMP_SpriteAsset CreateSpriteAsset(IEnumerable<(Sprite sprite, string name)> sprites)
         {
             var asset = TMP_SpriteAsset.CreateInstance<TMP_SpriteAsset>();
-            asset.spriteSheet = sprites.First().texture;
+            asset.spriteSheet = sprites.First().sprite.texture;
             asset.material = GetOrCreateSpriteMaterial(asset.spriteSheet);
             asset.spriteInfoList = new List<TMP_Sprite>();
             asset.spriteGlyphTable.Clear();
             asset.UpdateLookupTables();
             foreach (var sprite in sprites)
             {
-                var spriteRect = sprite.textureRect;
+                var spriteRect = sprite.sprite.textureRect;
                 var spriteGlyph = new TMP_SpriteGlyph();
                 spriteGlyph.index = _indexer;
                 spriteGlyph.scale = 1f;
