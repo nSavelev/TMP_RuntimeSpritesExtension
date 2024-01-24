@@ -9,6 +9,8 @@ namespace TMP_SpriteExtension.Runtime
         private Sprite[] _sprites;
         [SerializeField]
         private SpriteAtlas[] _atlases;
+        [SerializeField]
+        private float _vOffset = 0.5f;
 
         private TMPRuntimeSpritesService _service;
 
@@ -19,12 +21,12 @@ namespace TMP_SpriteExtension.Runtime
             _service.Init();
             if (_sprites != null && _sprites.Length > 0)
             {
-                _service.RegisterSprites(_sprites);
+                _service.RegisterSprites(_sprites, _vOffset);
             }
 
             if (_atlases != null && _atlases.Length > 0)
             {
-                _service.RegisterAtlases(_atlases);
+                _service.RegisterAtlases(_atlases, _vOffset);
             }
         }
 
