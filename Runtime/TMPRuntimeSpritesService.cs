@@ -52,25 +52,25 @@ namespace TMP_SpriteExtension.Runtime
             RegisterSpritesHolder();
         }
 
-        public void RegisterSprites(IEnumerable<Sprite> sprites)
+        public void RegisterSprites(IEnumerable<Sprite> sprites, float vOffset = 0.5f)
         {
             var groups = sprites.GroupBy(e => e.texture).Where(e=>e.Key != null).Select(e=>(e.Key,e.ToList())).ToList();
             foreach (var group in groups)
             {
-                _rootAsset.fallbackSpriteAssets.Add(CreateSpriteAsset(group.Item2.Where(e=>e != null).Select(e=>(e, e.name))));
+                _rootAsset.fallbackSpriteAssets.Add(CreateSpriteAsset(group.Item2.Where(e=>e != null).Select(e=>(e, e.name))), vOffset);
             }
         }
 
-        public void RegisterSprites(IEnumerable<(Sprite sprite, string name)> sprites)
+        public void RegisterSprites(IEnumerable<(Sprite sprite, string name)> sprites, float vOffset = 0.5f)
         {
             var groups = sprites.GroupBy(e => e.sprite.texture).Where(e=>e.Key != null).Select(e=>(e.Key,e.ToList())).ToList();
             foreach (var group in groups)
             {
-                _rootAsset.fallbackSpriteAssets.Add(CreateSpriteAsset(group.Item2.Where(e=>e.sprite != null).Select(e=>(e.sprite, e.name))));
+                _rootAsset.fallbackSpriteAssets.Add(CreateSpriteAsset(group.Item2.Where(e=>e.sprite != null).Select(e=>(e.sprite, e.name))), vOffset);
             }
         }
 
-        private TMP_SpriteAsset CreateSpriteAsset(IEnumerable<(Sprite sprite, string name)> sprites)
+        private TMP_SpriteAsset CreateSpriteAsset(IEnumerable<(Sprite sprite, string name)> sprites, float vOffset)
         {
             var asset = TMP_SpriteAsset.CreateInstance<TMP_SpriteAsset>();
             asset.spriteSheet = sprites.First().sprite.texture;
@@ -85,7 +85,7 @@ namespace TMP_SpriteExtension.Runtime
                 spriteGlyph.index = _indexer;
                 spriteGlyph.scale = 1f;
                 spriteGlyph.metrics = new GlyphMetrics((int)spriteRect.width, (int)spriteRect.height,
-                    0, spriteRect.height * 0.8f, 
+                    0, spriteRect.height * vOffset, 
                     spriteRect.width);
                 spriteGlyph.glyphRect = new GlyphRect(spriteRect);
                 asset.spriteGlyphTable.Add(spriteGlyph);
@@ -101,14 +101,14 @@ namespace TMP_SpriteExtension.Runtime
             return asset;
         }
         
-        public void RegisterAtlas(SpriteAtlas atlas)
+        public void RegisterAtlas(SpriteAtlas atlas, float vOffset = 0.5f)
         {
-            RegisterSprites(GetSpritesFromAtlas(atlas));
+            RegisterSprites(GetSpritesFromAtlas(atlas), vOffset);
         }
 
-        public void RegisterAtlases(IEnumerable<SpriteAtlas> atlases)
+        public void RegisterAtlases(IEnumerable<SpriteAtlas> atlases, float vOffset = 0.5f)
         {
-            RegisterSprites(atlases.Where(e=>e).SelectMany(e => GetSpritesFromAtlas(e)));
+            RegisterSprites(atlases.Where(e=>e).SelectMany(e => GetSpritesFromAtlas(e)), vOffset);
         }
 
         private IEnumerable<Sprite> GetSpritesFromAtlas(SpriteAtlas atlas)
