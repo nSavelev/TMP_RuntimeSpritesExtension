@@ -1,7 +1,7 @@
 {
   "name": "game.nsavelev.tmp_sprites",
   "displayName": "TMP Runtime Sprites",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "unity": "2020.3",
   "description": "Adds an ability to add sprites for TMP <sprite> tag in runtime from Sprite or SpriteAtlas assets",
   "dependencies": {
