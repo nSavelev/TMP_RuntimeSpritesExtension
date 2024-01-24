@@ -57,7 +57,7 @@ namespace TMP_SpriteExtension.Runtime
             var groups = sprites.GroupBy(e => e.texture).Where(e=>e.Key != null).Select(e=>(e.Key,e.ToList())).ToList();
             foreach (var group in groups)
             {
-                _rootAsset.fallbackSpriteAssets.Add(CreateSpriteAsset(group.Item2.Where(e=>e != null).Select(e=>(e, e.name))), vOffset);
+                _rootAsset.fallbackSpriteAssets.Add(CreateSpriteAsset(group.Item2.Where(e=>e != null).Select(e=>(e, e.name)), vOffset));
             }
         }
 
@@ -66,7 +66,7 @@ namespace TMP_SpriteExtension.Runtime
             var groups = sprites.GroupBy(e => e.sprite.texture).Where(e=>e.Key != null).Select(e=>(e.Key,e.ToList())).ToList();
             foreach (var group in groups)
             {
-                _rootAsset.fallbackSpriteAssets.Add(CreateSpriteAsset(group.Item2.Where(e=>e.sprite != null).Select(e=>(e.sprite, e.name))), vOffset);
+                _rootAsset.fallbackSpriteAssets.Add(CreateSpriteAsset(group.Item2.Where(e=>e.sprite != null).Select(e=>(e.sprite, e.name)), vOffset));
             }
         }
 
