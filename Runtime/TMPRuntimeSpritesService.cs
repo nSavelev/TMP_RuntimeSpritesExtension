@@ -59,6 +59,7 @@ namespace TMP_SpriteExtension.Runtime
             {
                 _rootAsset.fallbackSpriteAssets.Add(CreateSpriteAsset(group.Item2.Where(e=>e != null).Select(e=>(e, e.name)), vOffset));
             }
+            _rootAsset.UpdateLookupTables();
         }
 
         public void RegisterSprites(IEnumerable<(Sprite sprite, string name)> sprites, float vOffset = 0.5f)
@@ -68,6 +69,7 @@ namespace TMP_SpriteExtension.Runtime
             {
                 _rootAsset.fallbackSpriteAssets.Add(CreateSpriteAsset(group.Item2.Where(e=>e.sprite != null).Select(e=>(e.sprite, e.name)), vOffset));
             }
+            _rootAsset.UpdateLookupTables();
         }
 
         private TMP_SpriteAsset CreateSpriteAsset(IEnumerable<(Sprite sprite, string name)> sprites, float vOffset)
